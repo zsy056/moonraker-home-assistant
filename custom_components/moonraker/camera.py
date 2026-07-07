@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import logging
-import time
 from datetime import timedelta
 from urllib.parse import urlparse
 
@@ -32,6 +31,8 @@ from .const import (
 _LOGGER = logging.getLogger(__name__)
 DEFAULT_PORT = 80
 SNAPMAKER_U1_CAMERA_MONITOR_PATH = "/server/files/camera/monitor.jpg"
+SNAPMAKER_U1_CAMERA_MONITOR_DOMAIN = "lan"
+SNAPMAKER_U1_CAMERA_MONITOR_INTERVAL = 0
 SNAPMAKER_U1_MACHINE_TYPE = "snapmaker u1"
 
 hardcoded_camera = {
@@ -215,10 +216,14 @@ class MoonrakerCamera(MjpegCamera):
 
     async def _async_send_snapmaker_monitor(self, method: METHODS) -> None:
         """Send a Snapmaker U1 camera monitor RPC call."""
+        params = {"domain": SNAPMAKER_U1_CAMERA_MONITOR_DOMAIN}
+        if method == METHODS.CAMERA_START_MONITOR:
+            params["interval"] = SNAPMAKER_U1_CAMERA_MONITOR_INTERVAL
+
         try:
             await self.coordinator.async_send_data(
                 method,
-                {"req_id": int(time.time() * 1000)},
+                params,
             )
         except Exception:
             _LOGGER.debug(

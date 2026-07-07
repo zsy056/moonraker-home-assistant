@@ -485,7 +485,8 @@ async def test_snapmaker_u1_camera_monitor_heartbeat(
         await hass.async_block_till_done()
 
         start_monitor_seen = any(
-            method == "camera.start_monitor" and "req_id" in kwargs
+            method == "camera.start_monitor"
+            and kwargs == {"domain": "lan", "interval": 0}
             for method, kwargs in calls
         )
 
@@ -499,7 +500,7 @@ async def test_snapmaker_u1_camera_monitor_heartbeat(
     remove_interval.assert_called_once()
     assert start_monitor_seen
     assert any(
-        method == "camera.stop_monitor" and "req_id" in kwargs
+        method == "camera.stop_monitor" and kwargs == {"domain": "lan"}
         for method, kwargs in calls
     )
 
@@ -640,7 +641,30 @@ async def test_snapmaker_monitor_tick_sends_start_request():
 
     method, payload = coordinator.async_send_data.await_args.args
     assert method == METHODS.CAMERA_START_MONITOR
-    assert "req_id" in payload
+    assert payload == {"domain": "lan", "interval": 0}
+
+
+async def test_snapmaker_monitor_stop_sends_domain_request():
+    """Send a stop-monitor request with the Snapmaker monitoring domain."""
+    coordinator = SimpleNamespace(
+        api_device_name="mainsail",
+        data={},
+        async_send_data=AsyncMock(),
+    )
+    moonraker_camera = _make_moonraker_camera(
+        coordinator,
+        {
+            "name": "webcam",
+            "stream_url": "/server/files/camera/monitor.jpg",
+            "snapshot_url": "/server/files/camera/monitor.jpg",
+        },
+    )
+
+    await moonraker_camera._async_send_snapmaker_monitor(METHODS.CAMERA_STOP_MONITOR)
+
+    method, payload = coordinator.async_send_data.await_args.args
+    assert method == METHODS.CAMERA_STOP_MONITOR
+    assert payload == {"domain": "lan"}
 
 
 async def test_snapmaker_monitor_send_handles_error():
