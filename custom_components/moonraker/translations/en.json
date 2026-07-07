@@ -28,7 +28,8 @@
           "camera_stream_url": "Camera Stream URL",
           "camera_snapshot_url": "Camera Snapshot URL",
           "camera_port": "Camera Port",
-          "thumbnail_port": "Thumbnail Port"
+          "thumbnail_port": "Thumbnail Port",
+          "snapmaker_u1_camera_heartbeat_interval": "Snapmaker U1 camera heartbeat interval (s)"
         },
         "title": "Configuration"
       }

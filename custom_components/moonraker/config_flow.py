@@ -14,15 +14,17 @@ from homeassistant.util import network, slugify
 from .api import MoonrakerApiClient
 from .const import (
     CONF_API_KEY,
+    CONF_OPTION_CAMERA_PORT,
+    CONF_OPTION_CAMERA_SNAPSHOT,
+    CONF_OPTION_CAMERA_STREAM,
     CONF_PORT,
     CONF_PRINTER_NAME,
     CONF_TLS,
     CONF_URL,
     CONF_OPTION_POLLING_RATE,
-    CONF_OPTION_CAMERA_STREAM,
-    CONF_OPTION_CAMERA_SNAPSHOT,
-    CONF_OPTION_CAMERA_PORT,
+    CONF_OPTION_SNAPMAKER_U1_CAMERA_HEARTBEAT_INTERVAL,
     CONF_OPTION_THUMBNAIL_PORT,
+    DEFAULT_SNAPMAKER_U1_CAMERA_HEARTBEAT_INTERVAL,
     DOMAIN,
     TIMEOUT,
 )
@@ -194,6 +196,13 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                             CONF_OPTION_THUMBNAIL_PORT, ""
                         ),
                     ): str,
+                    vol.Optional(
+                        CONF_OPTION_SNAPMAKER_U1_CAMERA_HEARTBEAT_INTERVAL,
+                        default=self.config_entry.options.get(
+                            CONF_OPTION_SNAPMAKER_U1_CAMERA_HEARTBEAT_INTERVAL,
+                            DEFAULT_SNAPMAKER_U1_CAMERA_HEARTBEAT_INTERVAL,
+                        ),
+                    ): vol.All(vol.Coerce(int), vol.Range(min=1)),
                 }
             ),
         )

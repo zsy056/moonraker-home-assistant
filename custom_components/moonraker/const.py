@@ -31,6 +31,10 @@ CONF_OPTION_CAMERA_SNAPSHOT = "camera_snapshot_url"
 CONF_OPTION_POLLING_RATE = "polling_rate"
 CONF_OPTION_CAMERA_PORT = "camera_port"
 CONF_OPTION_THUMBNAIL_PORT = "thumbnail_port"
+CONF_OPTION_SNAPMAKER_U1_CAMERA_HEARTBEAT_INTERVAL = (
+    "snapmaker_u1_camera_heartbeat_interval"
+)
+DEFAULT_SNAPMAKER_U1_CAMERA_HEARTBEAT_INTERVAL = 10
 
 # API dict keys
 HOSTNAME = "hostname"
@@ -43,6 +47,8 @@ TIMEOUT = 10
 class METHODS(Enum):
     """API methods."""
 
+    CAMERA_START_MONITOR = "camera.start_monitor"
+    CAMERA_STOP_MONITOR = "camera.stop_monitor"
     HOST_RESTART = "machine.reboot"
     HOST_SHUTDOWN = "machine.shutdown"
     MACHINE_DEVICE_POWER_DEVICES = "machine.device_power.devices"

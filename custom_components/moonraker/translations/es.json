@@ -28,7 +28,8 @@
           "camera_stream_url": "URL de la transmisión de la cámara",
           "camera_snapshot_url": "URL de la instantánea de la cámara",
           "camera_port": "Puerto de la cámara",
-          "thumbnail_port": "Puerto de la miniatura"
+          "thumbnail_port": "Puerto de la miniatura",
+          "snapmaker_u1_camera_heartbeat_interval": "Intervalo de heartbeat de la cámara Snapmaker U1 (s)"
         },
         "title": "Configuración"
       }

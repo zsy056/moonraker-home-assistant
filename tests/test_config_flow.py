@@ -15,6 +15,7 @@ from custom_components.moonraker.const import (
     CONF_URL,
     CONF_OPTION_CAMERA_SNAPSHOT,
     CONF_OPTION_CAMERA_STREAM,
+    CONF_OPTION_SNAPMAKER_U1_CAMERA_HEARTBEAT_INTERVAL,
     DOMAIN,
 )
 
@@ -420,8 +421,15 @@ async def test_option_config_camera_services(hass):
         user_input={
             CONF_OPTION_CAMERA_STREAM: MOCK_OPTIONS[CONF_OPTION_CAMERA_STREAM],
             CONF_OPTION_CAMERA_SNAPSHOT: MOCK_OPTIONS[CONF_OPTION_CAMERA_SNAPSHOT],
+            CONF_OPTION_SNAPMAKER_U1_CAMERA_HEARTBEAT_INTERVAL: MOCK_OPTIONS[
+                CONF_OPTION_SNAPMAKER_U1_CAMERA_HEARTBEAT_INTERVAL
+            ],
         },
     )
     await hass.async_block_till_done()
 
     assert result["type"] == FlowResultType.CREATE_ENTRY
+    assert (
+        result["data"][CONF_OPTION_SNAPMAKER_U1_CAMERA_HEARTBEAT_INTERVAL]
+        == MOCK_OPTIONS[CONF_OPTION_SNAPMAKER_U1_CAMERA_HEARTBEAT_INTERVAL]
+    )
